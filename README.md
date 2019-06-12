@@ -11,5 +11,5 @@ conda install -c anaconda requests
 conda install -c conda-forge tqdm
 conda install -c anaconda pil
 
-python 0.1.0-whs-invoSho.py
+python src/0.1.0-whs-invoSho.py
 ```
