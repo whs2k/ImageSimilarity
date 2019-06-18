@@ -10,6 +10,7 @@ conda install -c anaconda pandas
 conda install -c anaconda requests 
 conda install -c conda-forge tqdm
 conda install -c anaconda pil
+conda install -c anaconda flask 
 
 python src/0.1.0-whs-invoSho.py
 ```
