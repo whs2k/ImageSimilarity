@@ -12,5 +12,5 @@ conda install -c conda-forge tqdm
 conda install -c anaconda pil
 conda install -c anaconda flask 
 
-python src/0.1.0-whs-invoSho.py
+python src/0.2.0-whs-invoSho.py
 ```
