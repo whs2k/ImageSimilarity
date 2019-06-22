@@ -67,9 +67,19 @@ def get_image_sims(fn_image_to_compare, trained_model, fn_df_save):
             continue
     return df_corpus
 
-def createResultsHTML(df_html, upload_image, list_of_topX_links, list_of_perfect_links, fn_to_save):
-    
-    html_sting = '''
+def createResultsHTML(df_html, upload_image, fn_to_save):
+    '''
+    Input: dataframe of similarities, the full path of the uploaded image, 
+        and the relative /templates .html results page
+    Ouptput: Saves a .html file in the /tempates folder
+    '''
+    df_html_final = df_html.to_html().replace('<table border="1" class="dataframe">',
+                        '''
+                        <head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></head>
+                        <table border="1" class="dataframe">''')
+    list_of_topX_links = df_html.fn.tolist()[0:3] 
+    list_of_perfect_links = df_html[df_html['ref_cosim'] > 0.9].fn.tolist()[0:3] 
+    html_string = '''
     <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -83,7 +93,8 @@ def createResultsHTML(df_html, upload_image, list_of_topX_links, list_of_perfect
         <body>
             <div class="container">
             <h2>Your Upload: </h2>  
-            <h3 herf="{}">{}</h3>
+            <h3>{}</h3>
+            <img src={} alt="Girl in a jacket" width="500" height="600">
             </div>
             <div class="container">
             <h2>Top Three: </h2> 
@@ -96,14 +107,10 @@ def createResultsHTML(df_html, upload_image, list_of_topX_links, list_of_perfect
         </body>
         </html>
     '''.format(upload_image, upload_image)
-    for topX_link, perfect_link in zip(list_of_topX_links, list_of_perfect_links):
-        html_sting = html_sting.replace("XXX>", topX_link+"<br>XXX>").replace("YYY", perfect_link+"<br>YYY>")
-    df_html_final = df_html.to_html().replace('<table border="1" class="dataframe">',
-                        '''
-                        <head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></head>
-                        <table border="1" class="dataframe">''')
+
+    print('Helper Saving: ',fn_to_save)
     with open(fn_to_save, "w") as f:
-        f.write(df_html_final)
+        f.write(html_string)
 
 
 

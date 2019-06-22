@@ -102,3 +102,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+src/uploads/.DS_Store
+src/.DS_Store
+.DS_Store

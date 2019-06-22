@@ -43,19 +43,28 @@ def upload_file():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            fn_to_save = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            fn_to_save = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
             file.save(fn_to_save)
+            print(fn_to_save)
+            print('file: ', file)
+
             #flash('Processing File')
+            try:
+                fn_html_export = 'export.html' 
+            except:
+                fn_html_export = 'export.html'  
+                pass
+            print(fn_html_export)
             df = helper.get_image_sims(fn_to_save, trained_densenet_model, FN_DF_TRANSFORMED) \
                                             .sort_values('ref_cosim',ascending=False)
             helper.createResultsHTML(df_html=df[['fn','ref_cosim']],
                                 upload_image=fn_to_save, 
-                                list_of_topX_links=df.fn.tolist()[0:3], 
-                                list_of_perfect_links=df[df['ref_cosim'] > 0.8].fn.tolist()[0:3], 
-                                fn_to_save=os.path.join(os.getcwd(),'templates','export_'+fn_to_save+'.html'))
+                                #list_of_topX_links=df.fn.tolist()[0:3], 
+                                #list_of_perfect_links=df[df['ref_cosim'] > 0.8].fn.tolist()[0:3], 
+                                fn_to_save=os.path.join(os.getcwd(),'templates',fn_html_export))
             #print(df.head())
             #flash("Saved HTML REsults")
-            return render_template('export.html')
+            return render_template(fn_html_export)
 
 
         #process file
