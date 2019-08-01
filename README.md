@@ -11,6 +11,9 @@ conda install -c anaconda requests
 conda install -c conda-forge tqdm
 conda install -c anaconda pil
 conda install -c anaconda flask 
+pip install --upgrade mxnet gluoncv
+conda install -c conda-forge opencv
+
 
 python src/0.2.0-whs-invoSho.py
 ```
