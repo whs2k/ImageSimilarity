@@ -2,7 +2,7 @@ import os
 #import magic
 import urllib.request
 #from app import app
-from flask import Flask, flash, request, redirect, render_template
+from flask import Flask, flash, request, redirect, render_template, url_for
 from werkzeug.utils import secure_filename
 import sys
 
@@ -56,18 +56,24 @@ def upload_file():
                 pass
             print(fn_html_export)
             df = helper.get_image_sims(fn_to_save, trained_densenet_model, FN_DF_TRANSFORMED) \
-                                            .sort_values('ref_cosim',ascending=False)
+                                            .sort_values('cosim',ascending=False)
 
 
-            helper.createResultsHTML(df_html=df[['fn','ref_cosim']],
+            helper.createResultsHTML(df_html=df[['fn','cosim']],
                                 upload_image=fn_to_save, 
+                                result_one=df.fn.loc[0],
                                 #list_of_topX_links=df.fn.tolist()[0:3], 
-                                #list_of_perfect_links=df[df['ref_cosim'] > 0.8].fn.tolist()[0:3], 
-                                fn_to_save=os.path.join(os.getcwd(),'templates',fn_html_export))
-            #print(df.head())
-            #flash("Saved HTML REsults")
-            return render_template(fn_html_export)
+                                #list_of_perfect_links=df[df['cosim'] > 0.8].fn.tolist()[0:3], 
+                                fn_to_export_template=os.path.join(os.getcwd(),'templates',fn_html_export))
 
+            print('df.fn.loc[0]: ', df.fn.loc[0])
+            print('df.fn.loc[1]: ', df.fn.loc[1])
+            print('df.fn.loc[2]: ', df.fn.loc[2])
+            return render_template(fn_html_export,
+                                    img_org=url_for('static', filename=fn_to_save.split('/')[-1]),
+                                    img_res1 = url_for('static', filename=df.fn.loc[0].split('data/')[-1]),
+                                    img_res2 = url_for('static', filename=df.fn.loc[1].split('data/')[-1]),
+                                    img_res3 = url_for('static', filename=df.fn.loc[2].split('data/')[-1]),)#, upload_image_url=url_for('static', filename=fn_to_save.split('/')[-1]), #result_one=url_for('static', filename=df.fn.loc[0].split('/')[-1]))
 
         #process file
         #save output in an templates/___.html

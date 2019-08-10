@@ -8,6 +8,7 @@ import pandas as pd
 #from IPython.display import Image 
 from PIL import Image    
 from tqdm import tqdm
+from flask import url_for
 
 # set the context on CPU, switch to GPU if there is one available
 ctx = mx.cpu()
@@ -96,7 +97,7 @@ def cropNormFit(fnx):
     returns an mxnet array ready for transformation image
     '''
         
-    image = mx.image.imdecode(open(fn, 'rb').read()).astype(np.float32)
+    image = mx.image.imdecode(open(fnx, 'rb').read()).astype(np.float32)
     resized = mx.image.resize_short(image, 224) #minimum 224x224 images
     cropped, crop_info = mx.image.center_crop(resized, (224, 224))
     normalized = mx.image.color_normalize(cropped/255,
@@ -122,24 +123,23 @@ def get_image_sims(fn_image_to_compare, trained_model, fn_df_save):
     batchified_image = cropNormFit(fn_image_to_compare)
     img_vec = vectorize(batchified_image ,preloaded_model=trained_model)
     df_corpus = pd.read_hdf(fn_df_save, key='df').reset_index(drop=True)
-    df_corpus['cosim'] = df_corpus['vector'].apply(lambda x: helper.cosineSimilarity(x, image_vect))
+    df_corpus['cosim'] = df_corpus['vector'].apply(lambda x: cosineSimilarity(x, img_vec))
     df_corpus = df_corpus.sort_values('cosim', ascending=False).reset_index(drop=True)
     return df_corpus
     
     
 
-def createResultsHTML(df_html, upload_image, fn_to_save):
+def createResultsHTML(df_html, upload_image, result_one, fn_to_export_template):
     '''
     Input: dataframe of similarities, the full path of the uploaded image, 
-        and the relative /templates .html results page
+        and the relative /templates .html results page. Must have a ['cosim'] col
     Ouptput: Saves a .html file in the /tempates folder
     '''
     df_html_final = df_html.to_html().replace('<table border="1" class="dataframe">',
                         '''
                         <head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></head>
                         <table border="1" class="dataframe">''')
-    list_of_topX_links = df_html.fn.tolist()[0:3] 
-    list_of_perfect_links = df_html[df_html['ref_cosim'] > 0.9].fn.tolist()[0:3] 
+
     html_string = '''
     <!DOCTYPE html>
         <html lang="en">
@@ -150,16 +150,25 @@ def createResultsHTML(df_html, upload_image, fn_to_save):
           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
           <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <style>
+                img {
+                  width: 100%;
+                  height: auto;
+                  max-width:500px;
+                  max-height:1000px;
+                }
+            </style>
         </head>
         <body>
             <div class="container">
             <h2>Your Upload: </h2>  
-            <h3>{}</h3>
-            <img src={} alt="Girl in a jacket" width="500" height="600">
+            <img src= "{{ img_org }}" alt="Your Upload" >
             </div>
             <div class="container">
             <h2>Top Three: </h2> 
-            XXX>
+            <img src= "{{ img_res1 }}" alt="Your Result 1" width="500" height="600">
+            <img src= "{{ img_res2 }}" alt="Your Result 2" width="500" height="600">
+            <img src= "{{ img_res3 }}" alt="Your Result 1" width="500" height="600">
             </div>
             <div class="container">
             <h2>Perfect Matches: </h2> 
@@ -167,52 +176,9 @@ def createResultsHTML(df_html, upload_image, fn_to_save):
             </div>
         </body>
         </html>
-    '''.format(upload_image, upload_image)
+    '''.encode('utf-8', errors='replace').decode('utf-8', errors='replace')
 
-    print('Helper Saving: ',fn_to_save)
-    with open(fn_to_save, "w") as f:
+    print('Helper Saving: ',fn_to_export_template)
+    with open(fn_to_export_template, "w") as f:
         f.write(html_string)
 
-
-
-def init():
-    fn_to_compare = input("gimme the fn of a pic please! ")
-    print("if this isn't your image; give up now")    
-    with Image.open(fn_to_compare) as img:
-        img.show()
-    #img = Image.open(fn_to_compare)
-    #img.show() 
-
-    batchified_image = cropNormFit(fn_to_compare)
-    #densenet_model = load_model
-    print("we're loading densenet model: \
-        https://modelzoo.co/model/densely-connected-convolutional-networks-2")
-    densenet_model = vision.densenet201(pretrained=True)
-    print("we just loaded: ")
-    print(type(densenet_model))
-    img_vec = vectorize(batchified_image ,preloaded_model=densenet_model)
-
-    fn_df_save = os.path.join(os.path.dirname(os.getcwd()), 'data', 'processed','0.0.4-whs-dogVectors.pickle')
-    df_corpus = pd.read_pickle(fn_df_save)
-    df_corpus['ref_vec'] = None
-    df_corpus['ref_cosim'] = None
-
-    for index in tqdm(range(df_corpus.count()[0])):
-        try:
-            cos_sim = cosineSimilarity(u = df_corpus['vector'].loc[index],
-                                        v = img_vec)
-            df_corpus['ref_cosim'].loc[index] = cos_sim
-        except:
-            df_corpus['ref_cosim'].loc[index] = 0
-            continue
-    df_corpus = df_corpus.sort_values('ref_cosim', ascending=False).reset_index(drop=True)
-    for index in range(3):
-        print(df_corpus['fn'].loc[index])
-        print(df_corpus['ref_cosim'].loc[index])
-        #img = Image.open(fn_to_compare)
-        #img.show() 
-        with Image.open(df_corpus['fn'].loc[index]) as img:
-            img.show()
-
-if __name__ == "__main__":
-    init()
