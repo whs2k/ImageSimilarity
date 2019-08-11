@@ -18,8 +18,8 @@ pip install --upgrade mxnet gluoncv
 conda install -c conda-forge opencv
 ```
 ### Step 3: Run Flask App
-cd {insert_path_here}/src
-python src/0.2.0-whs-invoSho.py
+```cd {insert_path_here}/src
+python src/0.2.0-whs-invoSho.py```
 
 ## App Logic
 1. App Initialization (loading of DenseNet Model, YOLO Model, and dataframe of previously vectorized dog photos)
