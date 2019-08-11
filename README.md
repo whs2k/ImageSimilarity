@@ -30,3 +30,6 @@ python src/0.2.0-whs-invoSho.py
 4. Densenet Model transforms the cropped image to a vector
 5. Cosine Similarity is calculated for tthe uploaded image vector and all previously vectorized dog photos
 6. Top three results are returned 
+
+## Notes
+- File "data/processed/0.0.6-whs-dogVectors.h5" is managed with Git LFS: https://help.github.com/en/articles/installing-git-large-file-storage
