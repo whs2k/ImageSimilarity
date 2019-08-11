@@ -21,7 +21,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 ALLOWED_EXTENSIONS = set(['pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 trained_densenet_model = helper.load_model()
-
+trained_yolo_model = helper.load_yolo_model()
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -55,8 +55,10 @@ def upload_file():
                 fn_html_export = 'export.html'  
                 pass
             print(fn_html_export)
-            df = helper.get_image_sims(fn_to_save, trained_densenet_model, FN_DF_TRANSFORMED) \
-                                            .sort_values('cosim',ascending=False)
+            df = helper.get_image_sims(fn_image_to_compare=fn_to_save, 
+                                        trained_model=trained_densenet_model, 
+                                        trained_yolo_model=trained_yolo_model, 
+                                        fn_df_save=FN_DF_TRANSFORMED).sort_values('cosim',ascending=False)
 
 
             helper.createResultsHTML(df_html=df[['fn','cosim']],

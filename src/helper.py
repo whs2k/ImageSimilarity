@@ -9,6 +9,9 @@ import pandas as pd
 from PIL import Image    
 from tqdm import tqdm
 from flask import url_for
+import cv2 as cv
+from gluoncv import model_zoo, data, utils
+from matplotlib import pyplot as plt
 
 # set the context on CPU, switch to GPU if there is one available
 ctx = mx.cpu()
@@ -70,14 +73,23 @@ def load_model():
     type(densenetX)
     return densenetX
 
-def yolo_extraction(fnx):
-    x, img = data.transforms.presets.yolo.load_test(fn, short=512)
-    class_IDs, scores, bounding_boxs = net(x)
+def load_yolo_model():
+    print("we're loading YOLO model: \
+        https://modelzoo.co/model/yolodark2mxnet")
+    net = model_zoo.get_model('yolo3_darknet53_voc', pretrained=True)
+    print("we just loaded: ")
+    type(net)
+    return net
+    
+
+def yolo_extraction(fnx, trained_yolo_model):
+    x, img = data.transforms.presets.yolo.load_test(fnx, short=512)
+    class_IDs, scores, bounding_boxs = trained_yolo_model(x)
     for index, bbox in enumerate(bounding_boxs[0]):
         class_ID = int(class_IDs[0][index].asnumpy()[0])
-        class_name = net.classes[class_ID]
+        class_name = trained_yolo_model.classes[class_ID]
         class_score = scores[0][index].asnumpy()
-        if (class_name == 'person') & (class_score > 0.9):
+        if (class_name == 'person') & (class_score > 0.8):
             #print('index: ', index)
             #print('class_ID: ', class_ID)
             #print('class_name: ', class_name)
@@ -90,13 +102,18 @@ def yolo_extraction(fnx):
             ymax = min(x.shape[2], ymax)
             im_fname_save = fnx.replace('.jpg','_humanCrop.jpg')
             plt.imsave(im_fname_save, img[ymin:ymax,xmin:xmax,:])
-            return 
+            img_rect = cv.rectangle(img=img, pt1=(xmin, ymin), pt2=(xmax, ymax),
+                       color=10000, thickness=10)
+            
+            plt.imsave(fnx, img_rect)
+            return im_fname_save
+            break
+
 def cropNormFit(fnx):
     '''
     accepts an mx decoded a filename of an image
     returns an mxnet array ready for transformation image
     '''
-        
     image = mx.image.imdecode(open(fnx, 'rb').read()).astype(np.float32)
     resized = mx.image.resize_short(image, 224) #minimum 224x224 images
     cropped, crop_info = mx.image.center_crop(resized, (224, 224))
@@ -119,8 +136,12 @@ def cosineSimilarity(u, v):
     similarity = np.dot(u,v) / (np.linalg.norm(u) * np.linalg.norm(v))
     return similarity
 
-def get_image_sims(fn_image_to_compare, trained_model, fn_df_save):
-    batchified_image = cropNormFit(fn_image_to_compare)
+def get_image_sims(fn_image_to_compare, trained_model, trained_yolo_model, fn_df_save):
+    print('helper fnx pre_yolo: ', fn_image_to_compare)
+    
+    yolo_image = yolo_extraction(fn_image_to_compare, trained_yolo_model)
+    print('helper fnx post_yolo: ', yolo_image)
+    batchified_image = cropNormFit(yolo_image)
     img_vec = vectorize(batchified_image ,preloaded_model=trained_model)
     df_corpus = pd.read_hdf(fn_df_save, key='df').reset_index(drop=True)
     df_corpus['cosim'] = df_corpus['vector'].apply(lambda x: cosineSimilarity(x, img_vec))
