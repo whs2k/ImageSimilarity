@@ -8,12 +8,7 @@ Determine cosine similarity of a human picture to
 ```conda create --name mxnet
 conda activate mxnet
 conda install jupyter
-conda install -c anaconda mxnet
-conda install -c anaconda pandas 
-conda install -c anaconda requests 
-conda install -c conda-forge tqdm
-conda install -c anaconda pil
-conda install -c anaconda flask 
+onda install -c anaconda pandas requests tqdm pil flask pip
 pip install --upgrade mxnet gluoncv
 conda install -c conda-forge opencv
 ```
