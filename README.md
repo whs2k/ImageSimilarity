@@ -2,7 +2,9 @@
 Determine cosine similarity of a human picture to
 
 ### Step 1: Download Repo
-
+```
+git clone https://github.com/whs2k/ImageSimilarity.git
+```
 ### Step 2: Setup Environment
 
 ```conda create --name mxnet
