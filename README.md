@@ -17,7 +17,7 @@ conda install -c conda-forge opencv
 ### Step 3: Run Flask App
 ```
 cd {insert_path_here}/src
-python src/0.2.0-whs-invoSho.py
+python src/0.2.1-whs-invoSho_yolo.py
 ```
 
 ## App Logic
