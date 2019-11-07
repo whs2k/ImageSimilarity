@@ -94,16 +94,20 @@ def detect_files():
     # check if the post request has the file part
     if 'file' not in request.files:
         return jsonify({
-            "status": 100,
+            "status": 400,
             "msg": 'No file part'
         })
+
     file = request.files['file']
     if file.filename == '':
+        print("filename is blank")
         return jsonify({
-            "status": 100,
+            "status": 400,
             "msg": 'No file selected for uploading'
         })
+
     if file and allowed_file(file.filename):
+
         filename = secure_filename(file.filename)
         fn_to_save = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(fn_to_save)
@@ -122,12 +126,13 @@ def detect_files():
             "static/" + df.fn.loc[2].split('data/')[-1]
         ]
         return jsonify({
-            "status": 0,
+            "status": 200,
             "data": response
         })
     else:
         return jsonify({
-            "status": 100,
+
+            "status": 400,
             "msg": 'Allowed file types are txt, pdf, png, jpg, jpeg, gif'
         })
 

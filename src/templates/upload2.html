@@ -189,10 +189,11 @@
 			cache: false,
 			processData: false,
 			contentType: false,
-
 			success: function (data) {
-				var s = ''
+			if(data.status == 200) {
+					                       var s = ''
 				data.data.forEach(function (item, index) {
+
 					if (index == 0) {
 						$("#origin").attr("src", item);
 					} else {
@@ -210,6 +211,22 @@
 				})
 				$('#message').html("<h2>Contact Form Submitted!</h2>")
 			}
+			else
+			{
+			$("#loader").css('display', 'none');
+			$('#showDiv').html(data.msg);
+
+			$("#showDiv").css('display', 'block');
+
+
+
+			}
+
+
+
+
+
+}
 		});
 		return false;
 	});
