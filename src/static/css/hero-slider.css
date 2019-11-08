@@ -1,4 +1,4 @@
-/* -------------------------------- 
+/* --------------------------------
 
 Primary style
 
@@ -28,9 +28,9 @@ img {
   max-width: 100%;
 }
 
-/* -------------------------------- 
+/* --------------------------------
 
-Main Components 
+Main Components
 
 -------------------------------- */
 .cd-header {
@@ -138,18 +138,18 @@ Main Components
   }
 }
 
-/* -------------------------------- 
+/* --------------------------------
 
 Slider
 
 -------------------------------- */
 .cd-hero {
+overflow:hidden;
   position: relative;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  width: 75%;
   margin: auto;
-  padding-top: 300px;
+  padding-top: 180px;
   min-height: 879px;
   text-align: center;
 
@@ -207,7 +207,7 @@ Slider
   }
 }
 
-/* -------------------------------- 
+/* --------------------------------
 
 Single slide style
 
@@ -381,7 +381,7 @@ Single slide style
   }
 }
 
-/* -------------------------------- 
+/* --------------------------------
 
 Single slide animation
 
@@ -412,7 +412,7 @@ Single slide animation
     transform: translateX(0);
   }
   .cd-hero-slider .is-moving .cd-half-width {
-    /* this is the slide moving outside the viewport 
+    /* this is the slide moving outside the viewport
     wait for the end of the transition on the <li> parent before set opacity to 0 and translate to 40px/-40px */
     -webkit-transition: opacity 0s 0.5s, -webkit-transform 0s 0.5s;
     -moz-transition: opacity 0s 0.5s, -moz-transform 0s 0.5s;
@@ -466,7 +466,7 @@ Single slide animation
   .cd-hero-slider li.is-moving .cd-full-width h2,
   .cd-hero-slider li.is-moving .cd-full-width p,
   .cd-hero-slider li.is-moving .cd-full-width .cd-btn {
-    /* this is the slide moving outside the viewport 
+    /* this is the slide moving outside the viewport
     wait for the end of the transition on the li parent before set opacity to 0 and translate to 100px/-100px */
     -webkit-transition: opacity 0s 0.5s, -webkit-transform 0s 0.5s;
     -moz-transition: opacity 0s 0.5s, -moz-transform 0s 0.5s;
@@ -488,7 +488,7 @@ Single slide animation
     transition: opacity 0.4s 0.4s, transform 0.5s 0.4s, background-color 0.2s 0s;
   }
 }
-/* -------------------------------- 
+/* --------------------------------
 
 Slider navigation
 
@@ -643,7 +643,7 @@ Slider navigation
   }
 }
 
-/* -------------------------------- 
+/* --------------------------------
 
 Main content
 
@@ -669,7 +669,7 @@ Main content
   }
 }
 
-/* -------------------------------- 
+/* --------------------------------
 
 Javascript disabled
 

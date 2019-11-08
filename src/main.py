@@ -137,6 +137,11 @@ def detect_files():
         })
 
 
+@app.route('/aboutUs', methods=['GET'])
+def aboutUs():
+    return render_template('aboutus.html')
+
+
 if __name__ == "__main__":
     # app.run()
     app.run(host='0.0.0.0', port=5001, debug=True)
