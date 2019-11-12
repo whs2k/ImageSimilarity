@@ -1,85 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Image Upload and Show</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}">
-
-
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/fontAwesome.css') }}">
-
-    <link
-            href="https://fonts.googleapis.com/css?family=Abril+Fatface|Alegreya|Arvo|BioRhyme|Concert+One|Cormorant+Upright|Lora|Playfair+Display|Rakkas|Yatra+One&display=swap"
-            rel="stylesheet">
-
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/hero-slider.css') }}">
-
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/tooplate-style.css') }}">
-
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
-    <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/vendor/modernizr-2.8.3-respond-1.4.2.min.js') }}"></script>
-</head>
-<body>
-<div class="header">
-    <div class="container">
-        <nav class="navbar navbar-inverse" role="navigation">
-            <div class="navbar-header">
-                <button type="button" id="nav-toggle" class="navbar-toggle" data-toggle="collapse"
-                        data-target="#main-nav">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a href="/" class="navbar-brand scroll-top">
-                    <div class="logo"></div>
-                </a>
-            </div>
-            <!--/.navbar-header-->
-            <div id="main-nav" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="nav-item">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Image Upload and Show</title>
+      <meta name="description" content="">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="apple-touch-icon" href="apple-touch-icon.png">
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}">
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/fontAwesome.css') }}">
+      <link
+         href="https://fonts.googleapis.com/css?family=Abril+Fatface|Alegreya|Arvo|BioRhyme|Concert+One|Cormorant+Upright|Lora|Playfair+Display|Rakkas|Yatra+One&display=swap"
+         rel="stylesheet">
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/hero-slider.css') }}">
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/tooplate-style.css') }}">
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+      <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/vendor/modernizr-2.8.3-respond-1.4.2.min.js') }}"></script>
+   </head>
+   <body>
+      <div class="header">
+         <div class="container">
+            <nav class="navbar navbar-inverse" role="navigation">
+               <div class="navbar-header">
+                  <button type="button" id="nav-toggle" class="navbar-toggle" data-toggle="collapse"
+                     data-target="#main-nav">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  </button>
+                  <a href="/" class="navbar-brand scroll-top">
+                     <div class="logo"></div>
+                  </a>
+               </div>
+               <!--/.navbar-header-->
+               <div id="main-nav" class="collapse navbar-collapse">
+                  <ul class="nav navbar-nav">
+                     <li class="nav-item">
                         <a class="scroll-link" href="{{url_for('aboutUs')}}">About Us</a>
-                    </li>
-                </ul>
-
-            </div>
-            <!--/.navbar-collapse-->
-        </nav>
-        <!--/.navbar-->
-    </div>
-    <!--/.container-->
-</div>
-<section class="cd-hero">
-    <p style="font-size:20px">Dogifai uses cosine similarity to compare a vectorized upload image against a corpus of
-        dog photos (thanks upsplash). If you like what you see drop me a like wsolomon@dogifai.com
-    </p>
-</section>
-
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="copyright-text">
-                    <ul>
+                     </li>
+                  </ul>
+               </div>
+               <!--/.navbar-collapse-->
+            </nav>
+            <!--/.navbar-->
+         </div>
+         <!--/.container-->
+      </div>
+      <section class="cd-hero">
+         <div class="aboutContainer">
+            <p style="font-size:20px">Dogifai uses cosine similarity to compare a vectorized upload image against a corpus of
+               dog photos (thanks upsplash). <br>If you like what you see drop me a like wsolomon@dogifai.com
+            </p>
+         </div>
+      </section>
+      <footer>
+         <div class="container">
+            <div class="row">
+               <div class="col-md-6">
+                  <div class="copyright-text">
+                     <ul>
                         <p>Copyright &copy; 2019</p>
-                    </ul>
-                </div>
+                     </ul>
+                  </div>
+               </div>
             </div>
-        </div>
-    </div>
-</footer>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="{{ url_for('static', filename='js/vendor/bootstrap.min.js') }}"></script>
-
-<script src="{{ url_for('static', filename='js/plugins.js') }}"></script>
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
-</body>
+         </div>
+      </footer>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+      <script src="{{ url_for('static', filename='js/vendor/bootstrap.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/plugins.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+   </body>
 </html>
